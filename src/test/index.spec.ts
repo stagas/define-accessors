@@ -34,4 +34,34 @@ describe('defineAccessors', () => {
     expect(typed.zoo).toEqual(42)
     expect(source.zoo).toEqual(42)
   })
+
+  it('with custom property descriptor factory', () => {
+    const target = {}
+    const source = {
+      foo: 'a prop',
+      bar: 'another',
+      zoo: 10,
+    }
+    const other: Record<string, unknown> = {
+      foo: 'smth',
+      bar: 'else',
+      zoo: 42,
+    }
+    const typed = defineAccessors(target, source, (key: string) => ({
+      get() {
+        return other[key]
+      },
+      set(value: never) {
+        other[key] = value
+      },
+    }))
+    expect(typed).toBe(target)
+    expect(typed.foo).toBe(other.foo)
+    expect(typed.bar).toBe(other.bar)
+    expect(typed.zoo).toBe(other.zoo)
+    typed.foo = 'whatever'
+    expect(typed.foo).toEqual('whatever')
+    expect(other.foo).toEqual('whatever')
+    expect(source.foo).toEqual('a prop')
+  })
 })
