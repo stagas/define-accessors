@@ -3,7 +3,7 @@
   "author": "stagas",
   "short": "stagas/define-accessors",
   "description": "define accessors for an object on another object",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "license": "MIT",
   "repository": {
     "type": "git",

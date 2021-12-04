@@ -32,9 +32,11 @@ $ npm i define-accessors
 
 ### defineAccessors
 
-[src/index.ts:26-42](https://github.com/stagas/define-accessors/blob/06df56edff6f16e4904728811ce1d12fe4bed808/src/index.ts#L26-L42 "Source code on GitHub")
+[src/index.ts:59-67](https://github.com/stagas/define-accessors/blob/4cf856974916f66bc4b13c8bbfaede18fc7d420d/src/index.ts#L59-L67 "Source code on GitHub")
 
 Defines accessors for a source object on a target object.
+
+Example; all values reflected on source:
 
 ```ts
 const target = {}
@@ -54,10 +56,34 @@ expect(typed.foo).toEqual('something else')
 expect(source.foo).toEqual('something else')
 ```
 
+Example; all values reflected on `other` using a custom property descriptor factory:
+
+```ts
+const target = {}
+const source = {
+  foo: 'a prop',
+}
+const other: Record<string, unknown> = {
+  foo: 'something else',
+}
+const typed = defineAccessors(target, source, (key: string) => ({
+  enumerable: true,
+  get() {
+    return other[key]
+  },
+  set(value: never) {
+    other[key] = value
+  },
+}))
+expect(typed).toBe(target)
+expect(typed.foo).toBe(other.foo)
+```
+
 #### Parameters
 
 *   `target` **T** The target object to define accessors on
 *   `source` **S** The source object where the actual values are
+*   `propertyDescriptorFactory` **function (key: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), source: S): PropertyDescriptor** A function that returns a custom property descriptor for the given key&#x20;(optional, default `createPropertyDescriptor`)
 
 Returns **any** The target object but with its type intersected with the source's type
 
