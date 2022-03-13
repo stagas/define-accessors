@@ -1,8 +1,8 @@
-const createPropertyDescriptor = (key: string, source: Record<string, unknown>) => ({
+const createPropertyDescriptor = <T, K extends keyof T>(key: K, source: T) => ({
   get() {
     return source[key]
   },
-  set(value: never) {
+  set(value: T[K]) {
     source[key] = value
   },
 })
@@ -56,14 +56,19 @@ const createPropertyDescriptor = (key: string, source: Record<string, unknown>) 
  * @param propertyDescriptorFactory A function that returns a custom property descriptor for the given key
  * @returns The target object but with its type intersected with the source's type
  */
-export const defineAccessors = <T, S extends Record<string, unknown>>(
+export const defineAccessors = <T, S extends object>(
   target: T,
   source: S,
-  propertyDescriptorFactory: (key: string, source: S) => PropertyDescriptor = createPropertyDescriptor
+  propertyDescriptorFactory: (
+    key: keyof S,
+    source: S
+  ) => PropertyDescriptor = createPropertyDescriptor
 ) =>
   Object.defineProperties(
     target,
-    Object.fromEntries(Object.keys(source).map(key => [key, propertyDescriptorFactory(key, source)]))
+    Object.fromEntries(
+      Object.keys(source).map(key => [key, propertyDescriptorFactory(key as keyof S, source)])
+    )
   ) as T & S
 
 export default defineAccessors

@@ -1,4 +1,4 @@
-import { defineAccessors } from '../'
+import { defineAccessors } from '../src'
 
 describe('defineAccessors', () => {
   it('getters', () => {
