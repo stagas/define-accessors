@@ -32,7 +32,7 @@ $ npm i define-accessors
 
 ### defineAccessors
 
-[src/index.ts:59-67](https://github.com/stagas/define-accessors/blob/4cf856974916f66bc4b13c8bbfaede18fc7d420d/src/index.ts#L59-L67 "Source code on GitHub")
+[src/index.ts:59-72](https://github.com/stagas/define-accessors/blob/95f6e9401b67076377588e17927a3a3c968be44f/src/index.ts#L59-L72 "Source code on GitHub")
 
 Defines accessors for a source object on a target object.
 
@@ -83,7 +83,7 @@ expect(typed.foo).toBe(other.foo)
 
 *   `target` **T** The target object to define accessors on
 *   `source` **S** The source object where the actual values are
-*   `propertyDescriptorFactory` **function (key: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), source: S): PropertyDescriptor** A function that returns a custom property descriptor for the given key&#x20;(optional, default `createPropertyDescriptor`)
+*   `propertyDescriptorFactory` **function (key: any, source: S): PropertyDescriptor** A function that returns a custom property descriptor for the given key (optional, default `createPropertyDescriptor`)
 
 Returns **any** The target object but with its type intersected with the source's type
 
